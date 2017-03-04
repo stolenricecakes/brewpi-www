@@ -150,12 +150,19 @@ function toDygraphArray(jsonData) {
         }
     }
 
+    var maxRows = 500;
+    var filter = 1;
+    if (rows.length > maxRows) {
+       filter = Math.floor(rows.length / maxRows);
+    }
     for (i = 0; i < rows.length; i++){
-        row = [];
-        for (j = 0; j < rows[i].c.length; j++) {
-            handlers[j](j, rows[i].c[j]);
+        if (i % filter == 0) {
+		row = [];
+		for (j = 0; j < rows[i].c.length; j++) {
+		    handlers[j](j, rows[i].c[j]);
+		}
+		dataArray.push(row);
         }
-        dataArray.push(row);
     }
     return {"values": dataArray, "labels": labelsArray, "annotations": annotationsArray};
 }
